@@ -33,7 +33,7 @@ import org.apache.hadoop.hbase.KeyValue.Type
  */
 
 
-class HBaseResultToBufferConverter extends Converter[Any, String]{
+class HBaseResultToStringConverter extends Converter[Any, String]{
   override def convert(obj: Any): String = {
     import collection.JavaConverters._
 
