@@ -9,8 +9,15 @@ import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.KeyValue.Type
 
 
-class HBaseResultToBufferConverter extends Converter[Any, Buffer[String]]{
-  override def convert(obj: Any): Buffer[String] = {
+/**
+ * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
+ * the records in an HBase Result to a String. In the String, it contains row, column,
+ * timesstamp, type and value
+ */
+
+
+class HBaseResultToBufferConverter extends Converter[Any, String]{
+  override def convert(obj: Any): String = {
     import collection.JavaConverters._
 
     val result = obj.asInstanceOf[Result]
@@ -22,6 +29,7 @@ class HBaseResultToBufferConverter extends Converter[Any, Buffer[String]]{
           Bytes.toStringBinary(record.getValue),
           Type.codeToType(record.getType)
         ))
+    // output is an instance of [[Buffer[String]]]
     output.mkString(" ")
   }
 }
