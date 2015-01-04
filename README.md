@@ -3,7 +3,9 @@ spark_hbase
 
 An example in Scala of reading data saved in hbase by Spark and an example of converter for python
 
-The example in scala transfers the data saved in hbase into `RDD[String]` which contains *row, column:cell, timestamp, value, type*. The example of converter for python transfer the data saved in hbase into string which contains the same information as the example above. We can use ast package to easily transfer this string to dictionary
+The example in scala [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala) transfers the data saved in hbase into `RDD[String]` which contains *row, column:cell, timestamp, value, type*. 
+
+The example of converter for python [pythonConverters.scala](/src/main/scala/examples//pythonConverters.scala) transfer the data saved in hbase into string which contains the same information as the example above. We can use `ast` package to easily transfer this string to dictionary
 
 How to run
 =========
