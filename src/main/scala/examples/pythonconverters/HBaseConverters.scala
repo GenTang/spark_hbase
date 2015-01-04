@@ -32,14 +32,13 @@ import org.apache.hadoop.hbase.KeyValue.Type
  * timesstamp, type and value
  */
 
-
 class HBaseResultToStringConverter extends Converter[Any, String]{
   override def convert(obj: Any): String = {
     import collection.JavaConverters._
 
     val result = obj.asInstanceOf[Result]
     val output = result.list.asScala.map(record =>
-        "row=%s,column=%s,timestamp=%s,type=%s,value=%s".format(
+        "{'row':'%s','column':'%s','timestamp':'%s','type':'%s','value':'%s'}".format(
           Bytes.toStringBinary(record.getRow),
           Bytes.toStringBinary(record.getFamily) + ":" + Bytes.toStringBinary(record.getQualifier),
           record.getTimestamp.toString,
@@ -51,4 +50,14 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
   }
 }
 
+/**
+ * Implementation of [[org.apache.spark.api.python.Converter]] that converts an
+ * ImmutableBytesWritable to a String
+ */
 
+class ImmutableBytesWritableToStringConverter extends Converter[Any, String] {
+  override def convert(obj: Any): String = {
+    val key = obj.asInstanceOf[ImmutableBytesWritable]
+    Bytes.toStringBinary(key.get())
+  }
+}
