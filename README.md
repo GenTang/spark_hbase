@@ -41,3 +41,16 @@ How to run
 
 Example of results
 ==================
+Assume that you have already some data in hbase as follow:
+
+    hbase(main):028:0> scan "test"
+    ROW                          COLUMN+CELL
+     r1                          column=c1:a, timestamp=1420329575846, value=a1
+     r1                          column=c1:b, timestamp=1420329640962, value=b1
+     r2                          column=c1:a, timestamp=1420329683843, value=a2
+     r3                          column=c1:,  timestamp=1420329810504, value=3
+
+By launching `$ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> localhost test c1:a`, you will get 
+
+     {'column': 'c1:a', 'timestamp': '1420329575846', 'type': 'Put', 'value': 'a1', 'row': 'r1'}
+     {'column': 'c1:a', 'timestamp': '1420329683843', 'type': 'Put', 'value': 'a2', 'row': 'r2'}
