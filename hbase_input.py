@@ -56,7 +56,8 @@ if __name__ == "__main__":
       valueConverter=valueConv,
       conf=conf)
 
-  hbase_rdd = hbase_rdd.map(lambda line: line[1].split(" ")).flatMap(lambda x : x).map(ast.literal_eval)
+  hbase_rdd = hbase_rdd.flatMap(lambda line: line[1].split(" ")).map(ast.literal_eval)
+
   output = hbase_rdd.collect()
   for record in output:
     print record
