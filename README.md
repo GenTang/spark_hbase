@@ -21,11 +21,21 @@ How to run
   ```
 
 4. Running example python script: hbase_input.py
-  * if you are using `SPARK_CLASSPATH`, add `export SPARK_CLASSPATH=$SPARK_CLASSPATH":<the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar` to the `./conf/spark-env.sh`
-  ```bash
-  $ <the path of spark_hbase>/sbt/sbt clean assembly
-  ```
+  * if you are using `SPARK_CLASSPATH`:
+     1. Add `export SPARK_CLASSPATH=$SPARK_CLASSPATH":<the path to hbase>/lib/*:<the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar` to `./conf/spark-env.sh`.
+  
+    2. Launch the script by 
+      ```bash
+      $ ./bin/spark-submit <the path to hbase_input.py> <host> <table> <column>
+      ```
 
+  * you can also use `spark.executor.extraClassPath` and `--driver-class-path` (recommended)
+     1. Add `spark.executor.extraClassPath <the path to hbase>/lib/*` to `spark-defaults.conf`.
+
+     2. Launch the script by
+       ```bash
+        $ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> <host> <table> <column>
+       ```
 
 Example of results
 ==================
