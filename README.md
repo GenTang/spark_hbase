@@ -22,7 +22,7 @@ How to run
   $ <the path to spark_hbase>/sbt/sbt clean assembly
   ```
 
-4. Run example python script `hbase_input.py` which use pythonConverter `ImmutableBytesWritableToStringConverter` and `HBaseResultToStringConverter` to convert the data in hbase to dictionary
+* Run example python script [hbase_input.py](hbase_input.py) which use pythonConverter `ImmutableBytesWritableToStringConverter` and `HBaseResultToStringConverter` to convert the data in hbase to dictionary
 
   * If you are using `SPARK_CLASSPATH`:
      1. Add `export SPARK_CLASSPATH=$SPARK_CLASSPATH":<the path to hbase>/lib/*:<the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar` to `./conf/spark-env.sh`.
@@ -41,6 +41,8 @@ How to run
         --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar
         <the path to hbase_input.py> <host> <table> <column>
        ```
+
+* Run example scala script `
 
 Example of results
 ==================
