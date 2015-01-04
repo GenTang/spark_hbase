@@ -29,20 +29,44 @@ How to run
   
     2. Launch the script by 
       ```bash
-      $ ./bin/spark-submit <the path to hbase_input.py> <host> <table> <column>
+      $ ./bin/spark-submit <the path to hbase_input.py> \
+         <host> <table> <column>
       ```
 
-  * You can also use `spark.executor.extraClassPath` and `--driver-class-path` (recommended)
+  * You can also use `spark.executor.extraClassPath` and `--driver-class-path` (recommended):
      1. Add `spark.executor.extraClassPath <the path to hbase>/lib/*` to `spark-defaults.conf`.
 
      2. Launch the script by
        ```bash
-        $ ./bin/spark-submit 
-        --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar
-        <the path to hbase_input.py> <host> <table> <column>
+        $ ./bin/spark-submit \
+           --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar \
+           <the path to hbase_input.py> \
+           <host> <table> <column>
        ```
 
-* Run example scala script `
+* Run example scala script [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala)
+  * If you are using `SPARK_CLASSPATH`:
+     1. Add `export SPARK_CLASSPATH=$SPARK_CLASSPATH":<the path to hbase>/lib/*` to `./conf/spark-env.sh`.
+
+     2. Launch the script by 
+      ```bash
+      $ ./bin/spark-submit \
+         --class examples.HBaseInput \
+         <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar \
+         <host> <table> 
+      ```
+      
+  * You can also use `spark.executor.extraClassPath` and `--driver-class-path` (recommended):
+     1. The same configuration as above
+ 
+     2. Launch the script by
+      ```bash
+      $ ./bin/spark-submit \
+         --driver-class-path <the path to hbase>/lib/*: \
+         --class examples.HBaseInput \
+         <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar \
+         <host> <table> 
+      ```
 
 Example of results
 ==================
