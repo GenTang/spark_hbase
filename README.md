@@ -34,7 +34,9 @@ How to run
 
      2. Launch the script by
        ```bash
-        $ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> <host> <table> <column>
+        $ ./bin/spark-submit 
+        --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar
+        <the path to hbase_input.py> <host> <table> <column>
        ```
 
 Example of results
