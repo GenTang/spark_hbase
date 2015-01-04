@@ -1,6 +1,7 @@
 
 
 import sys
+# You need python 2.6+ to use built-in ast.literal_eval
 import ast
 
 from pyspark import SparkContext
@@ -8,15 +9,10 @@ from pyspark import SparkContext
 """
 Create test data in HBase first:
 hbase(main):016:0> create 'test', 'c1'
-0 row(s) in 1.0430 seconds
 hbase(main):017:0> put 'test', 'r1', 'c1:a', 'a1'
-0 row(s) in 0.0130 seconds
 hbase(main):018:0> put 'test', 'r1', 'c1:b', 'b1'
-0 row(s) in 0.0030 seconds
 hbase(main):019:0> put 'test', 'r2', 'c1:a', 'a2'
-0 row(s) in 0.0050 seconds
 hbase(main):020:0> put 'test', 'r3', 'c1', '3'
-0 row(s) in 0.0110 seconds
 hbase(main):028:0> scan "test"
 ROW                          COLUMN+CELL
  r1                          column=c1:a, timestamp=1420329575846, value=a1
@@ -27,11 +23,11 @@ ROW                          COLUMN+CELL
 if __name__ == "__main__":
   if len(sys.argv) != 4:
     print >> sys.stderr, """
-      Usage: hbase_inputformat <host> <table>
+      Usage: hbase_inputformat <host> <table> <column>
       Run with example jar:
       ./bin/spark-submit --driver-class-path /path/to/example.jar \
       /path/to/examples/hbase_inputformat.py <host> <table> <column>
-      Assumes you have some data in HBase already, running on <host>, in <table>
+      Assumes you have some data in HBase already, running on <host>, in <table> at <column>
         """
     exit(-1)
   host = sys.argv[1]
@@ -56,7 +52,9 @@ if __name__ == "__main__":
       valueConverter=valueConv,
       conf=conf)
 
+  
   hbase_rdd = hbase_rdd.flatMap(lambda line: line[1].split(" ")).map(ast.literal_eval)
+  # hbase_rdd is a RDD[dict]
 
   output = hbase_rdd.collect()
   for record in output:
