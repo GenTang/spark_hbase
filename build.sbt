@@ -3,7 +3,7 @@ import AssemblyKeys._
 
 lazy val root = (project in file(".")).
   settings(
-    name := "pythonconverters",
+    name := "sparkWithHBase",
     version := "1.0",
     scalaVersion := "2.10.4"
   )

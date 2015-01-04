@@ -42,8 +42,8 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
           Bytes.toStringBinary(record.getRow),
           Bytes.toStringBinary(record.getFamily) + ":" + Bytes.toStringBinary(record.getQualifier),
           record.getTimestamp.toString,
-          Bytes.toStringBinary(record.getValue),
-          Type.codeToType(record.getType)
+          Type.codeToType(record.getType),
+          Bytes.toStringBinary(record.getValue)
         ))
     // output is an instance of [[Buffer[String]]]
     output.mkString(" ")
