@@ -3,9 +3,9 @@ spark_hbase
 
 Spark has their own example about integrating HBase and Spark in scala [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) and python converter [HBaseConverters.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/pythonconverters/HBaseConverters.scala). 
 
-However, the python converter `HBaseResultToStringConverter` in  [HBaseConverters.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/pythonconverters/HBaseConverters.scala) return only the value of first column in the result. And [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) stops just at returning *org.apache.hadoop.hbase.client.Result* and doing count() call.
+However, the python converter `HBaseResultToStringConverter` in  [HBaseConverters.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/pythonconverters/HBaseConverters.scala) return only the value of first column in the result. And [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) stops just at returning *org.apache.hadoop.hbase.client.Result* and doing .count() call.
 
-An example in Scala of reading data saved in hbase by Spark and an example of converter for python
+Here we provide a new example in Scala about transferring data saved in hbase into `String` by Spark and a new example of python converter.
 
 The example in scala [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala) transfers the data saved in hbase into `RDD[String]` which contains *row, column:cell, timestamp, value, type*. 
 
