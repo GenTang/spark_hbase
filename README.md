@@ -1,7 +1,7 @@
 spark_hbase
 ===========
 
-Spark has their own example about integrating HBase and Spark, such as [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) 
+Spark has their own example about integrating HBase and Spark in scala [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) and python converter [HBaseConverters.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/pythonconverters/HBaseConverters.scala)
 
 An example in Scala of reading data saved in hbase by Spark and an example of converter for python
 
