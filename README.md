@@ -83,7 +83,10 @@ Assume that you have already some data in hbase as follow:
      r2                          column=c1:a, timestamp=1420329683843, value=a2
      r3                          column=c1:,  timestamp=1420329810504, value=3
 
-By launching `$ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> localhost test c1:a`, you will get 
+By launching `$ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> localhost test c1`, you will get 
 
      {'column': 'c1:a', 'timestamp': '1420329575846', 'type': 'Put', 'value': 'a1', 'row': 'r1'}
+     {'column': 'c1:b', 'timestamp': '1420329640962', 'type': 'Put', 'value': 'b1', 'row': 'r1'}
      {'column': 'c1:a', 'timestamp': '1420329683843', 'type': 'Put', 'value': 'a2', 'row': 'r2'}
+     {'column': 'c1:', 'timestamp': '1420329810504', 'type': 'Put', 'value': '3', 'row': 'r3'}
+     
