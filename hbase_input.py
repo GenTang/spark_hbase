@@ -25,7 +25,7 @@ if __name__ == "__main__":
     print >> sys.stderr, """
       Usage: hbase_inputformat <host> <table> <column>
       Run with example jar:
-      ./bin/spark-submit --driver-class-path /path/to/example.jar \
+      ./bin/spark-submit --driver-class-path <the path to spark_hbase.jar> \
       /path/to/examples/hbase_inputformat.py <host> <table> <column>
       Assumes you have some data in HBase already, running on <host>, in <table> at <column>
         """
