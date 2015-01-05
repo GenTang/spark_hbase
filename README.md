@@ -1,6 +1,8 @@
 spark_hbase
 ===========
 
+Spark has their own example about integrating HBase and Spark, such as [HBaseTest.scala](https://github.com/apache/spark/blob/master/examples/src/main/scala/org/apache/spark/examples/HBaseTest.scala) 
+
 An example in Scala of reading data saved in hbase by Spark and an example of converter for python
 
 The example in scala [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala) transfers the data saved in hbase into `RDD[String]` which contains *row, column:cell, timestamp, value, type*. 
