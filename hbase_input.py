@@ -28,6 +28,7 @@ if __name__ == "__main__":
       ./bin/spark-submit --driver-class-path <the path to spark_hbase.jar> \
       /path/to/examples/hbase_inputformat.py <host> <table> <column>
       Assumes you have some data in HBase already, running on <host>, in <table> at <column>
+      More information is available at https://github.com/GenTang/spark_hbase
         """
     exit(-1)
   host = sys.argv[1]
@@ -36,7 +37,7 @@ if __name__ == "__main__":
   sc = SparkContext(appName="HBaseInputFormat")
 
   # Other options for configuring scan behavior are available. More information available at
-  # http://github.com/apache/hbase/blob/master/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormat.java 
+  # https://github.com/apache/hbase/blob/master/hbase-server/src/main/java/org/apache/hadoop/hbase/mapreduce/TableInputFormat.java 
   conf = {
       "hbase.zookeeper.quorum": host, 
       "hbase.mapreduce.inputtable": table,
