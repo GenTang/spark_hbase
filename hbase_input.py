@@ -54,11 +54,11 @@ if __name__ == "__main__":
       conf=conf)
 
   
-  hbase_rdd = hbase_rdd.flatMap(lambda line: line[1].split(" ")).map(ast.literal_eval)
+  hbase_rdd = hbase_rdd.flatMapValues(lambda v: v.split(" ")).mapValues(ast.literal_eval)
   # hbase_rdd is a RDD[dict]
 
   output = hbase_rdd.collect()
-  for record in output:
-    print record
+  for (k, v) in output:
+    print (k, v), type(v)
 
   sc.stop()
