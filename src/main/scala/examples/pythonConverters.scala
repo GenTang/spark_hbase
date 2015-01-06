@@ -24,6 +24,7 @@ import org.apache.hadoop.hbase.client.{Put, Result}
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable
 import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.KeyValue.Type
+import org.apache.hadoop.hbase.CellUtil
 
 
 /**
@@ -37,13 +38,13 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
     import collection.JavaConverters._
 
     val result = obj.asInstanceOf[Result]
-    val output = result.list.asScala.map(record =>
-        "{'row':'%s','column':'%s','timestamp':'%s','type':'%s','value':'%s'}".format(
-          Bytes.toStringBinary(record.getRow),
-          Bytes.toStringBinary(record.getFamily) + ":" + Bytes.toStringBinary(record.getQualifier),
-          record.getTimestamp.toString,
-          Type.codeToType(record.getType),
-          Bytes.toStringBinary(record.getValue)
+    val output = result.listCells.asScala.map(cell =>
+        "{'columnFamliy':'%s','qualifier':'%s','timestamp':'%s','type':'%s','value':'%s'}".format(
+          Bytes.toStringBinary(CellUtil.cloneFamily(cell)),
+          Bytes.toStringBinary(CellUtil.cloneQualifier(cell)),
+          cell.getTimestamp.toString,
+          Type.codeToType(cell.getTypeByte),
+          Bytes.toStringBinary(CellUtil.cloneValue(cell))
         ))
     // output is an instance of [[Buffer[String]]]
     output.mkString(" ")
