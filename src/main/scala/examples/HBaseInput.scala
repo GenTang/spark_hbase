@@ -18,7 +18,7 @@
 package examples
 
 import org.apache.hadoop.hbase.client.HBaseAdmin
-import org.apache.hadoop.hbase.{HBaseConfiguration, HTableDescriptor}
+import org.apache.hadoop.hbase.{HBaseConfiguration, HTableDescriptor, TableName}
 import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.KeyValue.Type
 import org.apache.hadoop.hbase.HConstants
@@ -45,7 +45,7 @@ object HBaseInput {
     // Initialize hBase table if necessary
     val admin = new HBaseAdmin(conf)
     if (!admin.isTableAvailable(args(1))) {
-      val tableDesc = new HTableDescriptor(args(1))
+      val tableDesc = new HTableDescriptor(TableName.valueOf(args(1)))
       admin.createTable(tableDesc)
     }
 
