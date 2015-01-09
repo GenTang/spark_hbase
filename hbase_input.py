@@ -59,6 +59,6 @@ if __name__ == "__main__":
 
   output = hbase_rdd.collect()
   for (k, v) in output:
-    print (k, v), type(v)
+    print (k, v)
 
   sc.stop()
