@@ -7,7 +7,7 @@ However, the python converter `HBaseResultToStringConverter` in  [HBaseConverter
 
 Here we provide a new example in Scala about transferring data saved in hbase into `String` by Spark and a new example of python converter.
 
-The example in scala [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala) transfers the data saved in hbase into `RDD[String]` which contains *row, column:cell, timestamp, value, type*. 
+The example in scala [HBaseInput.scala](/src/main/scala/examples/HBaseInput.scala) transfers the data saved in hbase into `RDD[String]` which contains *columnFamily, qualifier, timestamp, type, value*. 
 
 The example of converter for python [pythonConverters.scala](/src/main/scala/examples//pythonConverters.scala) transfer the data saved in hbase into string which contains the same information as the example above. We can use `ast` package to easily transfer this string to dictionary
 
@@ -85,8 +85,7 @@ Assume that you have already some data in hbase as follow:
 
 By launching `$ ./bin/spark-submit --driver-class-path <the path to spark_hbase>/target/scala-2.10/spark_hbase-assembly-1.0.jar <the path to hbase_input.py> localhost test c1`, you will get 
 
-     {'column': 'c1:a', 'timestamp': '1420329575846', 'type': 'Put', 'value': 'a1', 'row': 'r1'}
-     {'column': 'c1:b', 'timestamp': '1420329640962', 'type': 'Put', 'value': 'b1', 'row': 'r1'}
-     {'column': 'c1:a', 'timestamp': '1420329683843', 'type': 'Put', 'value': 'a2', 'row': 'r2'}
-     {'column': 'c1:', 'timestamp': '1420329810504', 'type': 'Put', 'value': '3', 'row': 'r3'}
-     
+     (u'r1', {'columnFamliy': 'c1', 'timestamp': '1420329575846', 'type': 'Put', 'qualifier': 'a', 'value': 'a1'}) 
+     (u'r1', {'columnFamliy': 'c1', 'timestamp': '1420329640962', 'type': 'Put', 'qualifier': 'b', 'value': 'b1'}) 
+     (u'r2', {'columnFamliy': 'c1', 'timestamp': '1420329683843', 'type': 'Put', 'qualifier': 'a', 'value': 'a2'}) 
+     (u'r3', {'columnFamliy': 'c1', 'timestamp': '1420329810504', 'type': 'Put', 'qualifier': '', 'value': '3'})
