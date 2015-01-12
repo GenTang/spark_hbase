@@ -23,6 +23,7 @@ import org.apache.hadoop.hbase.mapreduce.TableInputFormat
 import org.apache.hadoop.hbase.KeyValue.Type
 import org.apache.hadoop.hbase.HConstants
 import org.apache.hadoop.hbase.util.Bytes
+import org.apache.hadoop.hbase.CellUtil
 
 
 import org.apache.spark._
@@ -57,13 +58,13 @@ object HBaseInput {
     val keyValue = hBaseRDD.map(x => x._2).map(_.list)
 
     //outPut is a RDD[String], in which each line represents a record in HBase
-    val outPut = keyValue.flatMap(x =>  x.asScala.map(record =>
-        "row=%s,column=%s,timestamp=%s,type=%s,value=%s".format(
-          Bytes.toStringBinary(record.getRow),
-          Bytes.toStringBinary(record.getFamily) + ":" + Bytes.toStringBinary(record.getQualifier),
-          record.getTimestamp.toString,
-          Type.codeToType(record.getType),
-          Bytes.toStringBinary(record.getValue)
+    val outPut = keyValue.flatMap(x =>  x.asScala.map(cell =>
+        "columnFamily=%s,qualifier=%s,timestamp=%s,type=%s,value=%s".format(
+          Bytes.toStringBinary(CellUtil.cloneFamily(cell)),
+          Bytes.toStringBinary(CellUtil.cloneQualifier(cell)),
+          cell.getTimestamp.toString,
+          Type.codeToType(cell.getTypeByte),
+          Bytes.toStringBinary(CellUtil.cloneValue(cell))
         )
       )
     )
