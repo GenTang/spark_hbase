@@ -1,8 +1,7 @@
 
 
 import sys
-# You need python 2.6+ to use built-in ast.literal_eval
-import ast
+import json
 
 from pyspark import SparkContext
 
@@ -54,7 +53,7 @@ if __name__ == "__main__":
       conf=conf)
 
   
-  hbase_rdd = hbase_rdd.flatMapValues(lambda v: v.split(" ")).mapValues(ast.literal_eval)
+  hbase_rdd = hbase_rdd.flatMapValues(lambda v: v.split("\n")).mapValues(json.loads)
   # hbase_rdd is a RDD[dict]
 
   output = hbase_rdd.collect()
