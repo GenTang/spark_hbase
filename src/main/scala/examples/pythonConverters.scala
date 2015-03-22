@@ -37,7 +37,7 @@ import org.apache.hadoop.hbase.CellUtil
 class HBaseResultToStringConverter extends Converter[Any, String]{
   override def convert(obj: Any): String = {
     import collection.JavaConverters._
-    val result = obj.asInstanceOf[Result]
+    val result = obj.asInstanceOf[Result]                      
     val output = result.listCells.asScala.map(cell ⇒
         Map(
           "row" -> Bytes.toStringBinary(CellUtil.cloneFamily(cell)),
