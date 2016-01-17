@@ -54,6 +54,24 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
   }
 }
 
+class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.Map[String, String]]]{
+  override def convert(obj: Any): java.util.List[java.util.Map[String, String]] = {
+    import collection.JavaConverters._
+    val result = obj.asInstanceOf[Result]
+    val output = result.listCells.asScala.map(cell =>
+        new java.util.HashMap[String, String](Map(
+          "row" -> Bytes.toString(CellUtil.cloneFamily(cell)),
+          "columnFamily" -> Bytes.toString(CellUtil.cloneFamily(cell)),
+          "qualifier" -> Bytes.toString(CellUtil.cloneQualifier(cell)),
+          "timestamp" -> cell.getTimestamp.toString,
+          "type" -> Type.codeToType(cell.getTypeByte).toString,
+          "value" -> Bytes.toString(CellUtil.cloneValue(cell))
+        ).asJava)
+      )
+    new java.util.ArrayList[java.util.Map[String, String]](output.asJava)
+  }
+}
+
 /* Map of "columnFamily:column"->"value" consistent with Python dict
  Only works with 1 version max.  Ser/deser as python dict naturally, via HashMap
  */
