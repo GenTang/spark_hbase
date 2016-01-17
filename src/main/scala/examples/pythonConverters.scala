@@ -54,6 +54,27 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
   }
 }
 
+/* Map of "columnFamily:column"->"value" consistent with Python dict
+ Only works with 1 version max.  Ser/deser as python dict naturally, via HashMap
+ */
+class HBaseResultToMapConverter extends Converter[Any, java.util.Map[String, String]]{
+  override def convert(obj: Any): java.util.Map[String, String] = {
+
+    import collection.JavaConverters._
+    val result = obj.asInstanceOf[Result]
+
+    val my_map = result.listCells.asScala.map(
+        cell => (
+            Bytes.toString(CellUtil.cloneFamily(cell)) + ":" +
+            Bytes.toString(CellUtil.cloneQualifier(cell)),
+            Bytes.toString(CellUtil.cloneValue(cell)))
+    ).toMap.asJava
+
+    // nb: java.util.Map and scala map do not serialize into python??
+    new java.util.HashMap[String, String](my_map)
+  }
+}
+
 /**
  * Implementation of [[org.apache.spark.api.python.Converter]] that converts an
  * ImmutableBytesWritable to a String
