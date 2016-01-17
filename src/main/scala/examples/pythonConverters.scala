@@ -54,6 +54,25 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
   }
 }
 
+class HBaseResultToJSONConverter extends Converter[Any, String]{
+  override def convert(obj: Any): String = {
+    import collection.JavaConverters._
+    val result = obj.asInstanceOf[Result]
+    val output = result.listCells.asScala.map(cell =>
+        Map(
+          "row" -> Bytes.toStringBinary(CellUtil.cloneFamily(cell)),
+          "columnFamily" -> Bytes.toStringBinary(CellUtil.cloneFamily(cell)),
+          "qualifier" -> Bytes.toStringBinary(CellUtil.cloneQualifier(cell)),
+          "timestamp" -> cell.getTimestamp.toString,
+          "type" -> Type.codeToType(cell.getTypeByte).toString,
+          "value" -> Bytes.toStringBinary(CellUtil.cloneValue(cell))
+        )
+      )
+    // output is a JSON array of objects (maps)
+    "[" + output.map(JSONObject(_).toString()).mkString(", ") + "]"
+  }
+}
+
 class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.Map[String, String]]]{
   override def convert(obj: Any): java.util.List[java.util.Map[String, String]] = {
     import collection.JavaConverters._
