@@ -93,6 +93,17 @@ class HBaseResultToMapConverter extends Converter[Any, java.util.Map[String, Str
   }
 }
 
+/* Returns the most recent cell timestamp on the row */
+class MaxHBaseTimestamp extends Converter[Any, Long]{
+  override def convert(obj: Any): Long = {
+    import collection.JavaConverters._
+    val result = obj.asInstanceOf[Result]
+    result.listCells.asScala.map(cell =>
+        cell.getTimestamp
+      ).max
+  }
+}
+
 /**
  * Implementation of [[org.apache.spark.api.python.Converter]] that converts an
  * ImmutableBytesWritable to a String
