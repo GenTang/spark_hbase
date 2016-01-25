@@ -31,7 +31,7 @@ import org.apache.hadoop.hbase.CellUtil
 /**
  * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
  * the records in an HBase Result to a String. In the String, it contains row, column,
- * qualifier, timesstamp, type and value
+ * qualifier, timestamp, type and value
  */
 
 class HBaseResultToStringConverter extends Converter[Any, String]{
@@ -54,6 +54,11 @@ class HBaseResultToStringConverter extends Converter[Any, String]{
   }
 }
 
+/**
+ * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
+ * the records in an HBase Result to a String. In the String, it contains row, column,
+ * qualifier, timestamp, type and value, all packed as JSON
+ */
 class HBaseResultToJSONConverter extends Converter[Any, String]{
   override def convert(obj: Any): String = {
     import collection.JavaConverters._
@@ -73,6 +78,11 @@ class HBaseResultToJSONConverter extends Converter[Any, String]{
   }
 }
 
+/**
+ * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
+ * the records in an HBase Result into a list of maps, each containing row, column,
+ * qualifier, timestamp, type and value
+ */
 class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.Map[String, String]]]{
   override def convert(obj: Any): java.util.List[java.util.Map[String, String]] = {
     import collection.JavaConverters._
@@ -91,8 +101,9 @@ class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.M
   }
 }
 
-/* Map of "columnFamily:column"->"value" consistent with Python dict
- Only works with 1 version max.  Ser/deser as python dict naturally, via HashMap
+/**
+ * Map of "columnFamily:column"->"value" consistent with Python dict
+ * Only works with 1 version max.  Ser/deser as python dict naturally, via HashMap
  */
 class HBaseResultToMapConverter extends Converter[Any, java.util.Map[String, String]]{
   override def convert(obj: Any): java.util.Map[String, String] = {
@@ -112,7 +123,10 @@ class HBaseResultToMapConverter extends Converter[Any, java.util.Map[String, Str
   }
 }
 
-/* Returns the most recent cell timestamp on the row */
+/**
+ * Returns the most recent cell timestamp on the row as a long integer, useful for 
+ * operations that require syncing to data changes.
+ */
 class MaxHBaseTimestamp extends Converter[Any, Long]{
   override def convert(obj: Any): Long = {
     import collection.JavaConverters._
@@ -127,7 +141,6 @@ class MaxHBaseTimestamp extends Converter[Any, Long]{
  * Implementation of [[org.apache.spark.api.python.Converter]] that converts an
  * ImmutableBytesWritable to a String
  */
-
 class ImmutableBytesWritableToStringConverter extends Converter[Any, String] {
   override def convert(obj: Any): String = {
     val key = obj.asInstanceOf[ImmutableBytesWritable]
