@@ -81,9 +81,10 @@ class HBaseResultToJSONConverter extends Converter[Any, String]{
 /**
  * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
  * the records in an HBase Result into a list of maps, each containing row, column,
- * qualifier, timestamp, type and value
+ * qualifier, timestamp, type and value.  Values are returned as raw bytes rather than as
+ * printable versions, and thus may require unpacking.
  */
-class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.Map[String, String]]]{
+class HBaseResultToListConverter extends Converter[Any, java.util.List[java.util.Map[String, String]]]{
   override def convert(obj: Any): java.util.List[java.util.Map[String, String]] = {
     import collection.JavaConverters._
     val result = obj.asInstanceOf[Result]
@@ -102,8 +103,15 @@ class HBaseRawResultsConverter extends Converter[Any, java.util.List[java.util.M
 }
 
 /**
- * Map of "columnFamily:column"->"value" consistent with Python dict
- * Only works with 1 version max.  Ser/deser as python dict naturally, via HashMap
+ * Implementation of [[org.apache.spark.api.python.Converter]] that converts all 
+ * the records in an HBase Result into a Map of "columnFamily:column"->"value" consistent
+ * with a Python dict.
+ * 
+ * Only works with 1 version max (possibly latest if multiple are returned?).  
+ * Ser/deser as python dict naturally, via HashMap.
+ *
+ * Values are returned as raw bytes rather than as printable versions, and thus
+ * may require unpacking.
  */
 class HBaseResultToMapConverter extends Converter[Any, java.util.Map[String, String]]{
   override def convert(obj: Any): java.util.Map[String, String] = {
